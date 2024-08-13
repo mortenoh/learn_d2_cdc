@@ -5,10 +5,22 @@ from sqlalchemy import create_engine, text
 
 # Function to get changes from logical replication slot
 def get_logical_slot_changes(engine, slot_name, limit=None):
-    query = "SELECT * FROM pg_logical_slot_get_changes(:slot_name, NULL, :limit);"
+    query = """
+        SELECT * 
+        FROM pg_logical_slot_get_changes(
+            :slot_name, 
+            NULL, 
+            :limit, 
+            'format-version', '2',
+            'add-tables', 'public.fruit',
+            'include-xids', 'true'
+        );
+    """
+
     with engine.connect() as connection:
         result = connection.execute(text(query), {"slot_name": slot_name, "limit": limit})
         changes = result.fetchall()
+
     return changes
 
 

@@ -1,14 +1,20 @@
 # PG Replication/WAL
 
 ```bash
-# Create slot 'test_slot' on db 'postgres'
-pg_recvlogical -d postgres --slot test_slot --create-slot -P wal2json -U dhis -W
+pg_recvlogical -h localhost -p 15432 -U dhis -d dhis --slot test_slot --create-slot -P wal2json -W
+pg_recvlogical -h localhost -p 15432 -U dhis -d dhis --slot test_slot --start -o pretty-print=1 -o add-msg-prefixes=wal2json -f -
+pg_recvlogical -h localhost -p 15432 -U dhis -d dhis --slot test_slot --drop-slot
+```
 
-# Start to listen on slot 'test_slot' on db 'postgres'
-pg_recvlogical -d postgres --slot test_slot --start -o pretty-print=1 -o add-msg-prefixes=wal2json -f - -U dhis
-
-# Drop slot 'test_slot' on db 'postgres'
-pg_recvlogical -d postgres --slot test_slot --drop-slot
+```sql
+SELECT * FROM pg_create_logical_replication_slot('test_slot', 'wal2json');
+BEGIN;
+CREATE TABLE fruit (name TEXT);
+INSERT INTO fruit (name) VALUES('Apple');
+INSERT INTO fruit (name) VALUES('Orange');
+INSERT INTO fruit (name) VALUES('Kiwi');
+DROP TABLE fruit;
+COMMIT;
 ```
 
 ```sql
@@ -51,15 +57,6 @@ COMMIT;
 
 DROP TABLE table1_with_pk;
 DROP TABLE table1_without_pk;
-```
-
-```sql
-SELECT * FROM pg_create_logical_replication_slot('test_slot', 'wal2json');
-CREATE TABLE fruit (name TEXT);
-INSERT INTO fruit (name) VALUES('Apple');
-INSERT INTO fruit (name) VALUES('Orange');
-INSERT INTO fruit (name) VALUES('Kiwi');
-DROP TABLE fruit;
 ```
 
 ## Links
