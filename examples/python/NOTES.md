@@ -59,7 +59,6 @@ CREATE TABLE fruit (name TEXT);
 INSERT INTO fruit (name) VALUES('Apple');
 INSERT INTO fruit (name) VALUES('Orange');
 INSERT INTO fruit (name) VALUES('Kiwi');
-DELETE FROM fruit;
 DROP TABLE fruit;
 ```
 
