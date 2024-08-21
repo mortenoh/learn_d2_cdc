@@ -1,3 +1,2 @@
-spring:
-  application:
-    name: PG/DHIS2 CDC
+server:
+  port: 3000
