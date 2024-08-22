@@ -18,7 +18,7 @@ public class PgReplicationSlotRoute extends RouteBuilder {
 
   @Override
   public void configure() throws Exception {
-    from("pg-replication-slot://localhost:15432/dhis/test_slot8:wal2json"
+    from("pg-replication-slot://localhost:15432/dhis/test_slot:wal2json"
             + "?user=dhis"
             + "&password=dhis"
             + "&slotOptions.include-xids=true"
