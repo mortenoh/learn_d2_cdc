@@ -33,6 +33,7 @@ public class PgReplicationSlotRoute extends RouteBuilder {
               exchange.getIn().setBody(findChangeIds(changes));
             })
         .split(body())
+        .log("Body = ${body}")
         .toD("dhis2://get/resource?path=organisationUnits/${body.id}&client=#dhis2source")
         .unmarshal()
         .json(OrganisationUnit.class)
