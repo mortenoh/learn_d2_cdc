@@ -15,7 +15,7 @@ public class Main {
 
   @Bean
   public Dhis2Client dhis2source() {
-    return Dhis2ClientBuilder.newClient("https://play.im.dhis2.org/dev/api", "admin", "district")
+    return Dhis2ClientBuilder.newClient("http://localhost:8080/api", "admin", "district")
         .build();
   }
 }

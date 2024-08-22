@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.Data;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.jackson.JacksonDataFormat;
+import org.hisp.dhis.api.model.v40_2_2.OrganisationUnit;
 import org.springframework.stereotype.Component;
 
 enum ChangeType {
@@ -17,7 +18,7 @@ public class PgReplicationSlotRoute extends RouteBuilder {
 
   @Override
   public void configure() throws Exception {
-    from("pg-replication-slot://localhost:15432/dhis/test_slot5:wal2json"
+    from("pg-replication-slot://localhost:15432/dhis/test_slot8:wal2json"
             + "?user=dhis"
             + "&password=dhis"
             + "&slotOptions.include-xids=true"
@@ -34,7 +35,7 @@ public class PgReplicationSlotRoute extends RouteBuilder {
         .split(body())
         .toD("dhis2://get/resource?path=organisationUnits/${body.id}&client=#dhis2source")
         .unmarshal()
-        .json(org.hisp.dhis.api.model.v40_2_2.OrganisationUnit.class)
+        .json(OrganisationUnit.class)
         .log("${body.displayName.get()}");
   }
 
