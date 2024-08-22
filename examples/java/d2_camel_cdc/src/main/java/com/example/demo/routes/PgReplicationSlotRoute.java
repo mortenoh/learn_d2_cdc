@@ -7,7 +7,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.jackson.JacksonDataFormat;
 import org.springframework.stereotype.Component;
 
-enum ChaneType {
+enum ChangeType {
   CREATE,
   UPDATE
 }
@@ -17,7 +17,7 @@ public class PgReplicationSlotRoute extends RouteBuilder {
 
   @Override
   public void configure() throws Exception {
-    from("pg-replication-slot://localhost:15432/dhis/test_slot4:wal2json"
+    from("pg-replication-slot://localhost:15432/dhis/test_slot5:wal2json"
             + "?user=dhis"
             + "&password=dhis"
             + "&slotOptions.include-xids=true"
@@ -31,7 +31,11 @@ public class PgReplicationSlotRoute extends RouteBuilder {
               Changes changes = exchange.getIn().getBody(Changes.class);
               exchange.getIn().setBody(findChangeIds(changes));
             })
-        .log("${body}");
+        .split(body())
+        .toD("dhis2://get/resource?path=organisationUnits/${body.id}&client=#dhis2source")
+        .unmarshal()
+        .json(org.hisp.dhis.api.model.v40_2_2.OrganisationUnit.class)
+        .log("${body.displayName.get()}");
   }
 
   private List<ChangeInfo> findChangeIds(Changes changes) {
@@ -41,9 +45,9 @@ public class PgReplicationSlotRoute extends RouteBuilder {
       ChangeInfo changeInfo = new ChangeInfo();
 
       if (change.getKind().equals("insert")) {
-        changeInfo.setType(ChaneType.CREATE);
+        changeInfo.setType(ChangeType.CREATE);
       } else if (change.getKind().equals("update")) {
-        changeInfo.setType(ChaneType.UPDATE);
+        changeInfo.setType(ChangeType.UPDATE);
       } else {
         continue;
       }
@@ -67,7 +71,7 @@ public class PgReplicationSlotRoute extends RouteBuilder {
 
 @Data
 class ChangeInfo {
-  private ChaneType type;
+  private ChangeType type;
   private String id;
 }
 
