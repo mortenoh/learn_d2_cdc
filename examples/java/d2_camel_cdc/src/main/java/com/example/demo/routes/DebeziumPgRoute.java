@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.debezium.DebeziumConstants;
@@ -33,7 +34,6 @@ public class DebeziumPgRoute extends RouteBuilder {
             + "&offsetStorageFileName=/tmp/offset.dat")
         .process(
             ex -> {
-              DebeziumChangeEvent event = new DebeziumChangeEvent();
               @SuppressWarnings("unchecked")
               Map<String, ?> headerSourceMetadata =
                   ex.getIn().getHeader(DebeziumConstants.HEADER_SOURCE_METADATA, Map.class);
@@ -46,13 +46,8 @@ public class DebeziumPgRoute extends RouteBuilder {
               Struct key = ex.getIn().getHeader(DebeziumConstants.HEADER_KEY, Struct.class);
               Struct value = ex.getIn().getBody(Struct.class);
 
-              event.setDatabase(db);
-              event.setSchema(schema);
-              event.setTable(table);
-              event.setOperation(operation);
-              event.setKey(key);
-              event.setValue(value);
-
+              DebeziumChangeEvent event =
+                  new DebeziumChangeEvent(db, schema, table, operation, key, value);
               ex.getIn().setBody(event);
             })
         .marshal()
@@ -73,6 +68,7 @@ class StructSerializer extends JsonSerializer<Struct> {
 }
 
 @Data
+@AllArgsConstructor
 class DebeziumChangeEvent {
   private String database;
   private String schema;
