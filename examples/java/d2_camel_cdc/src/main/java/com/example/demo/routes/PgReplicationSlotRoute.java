@@ -13,7 +13,7 @@ enum ChangeType {
   UPDATE
 }
 
-@Component
+// @Component
 public class PgReplicationSlotRoute extends RouteBuilder {
 
   @Override
