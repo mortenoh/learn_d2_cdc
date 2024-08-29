@@ -5,6 +5,9 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.io.IOException;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.AllArgsConstructor;
@@ -38,6 +41,15 @@ public class DebeziumPgRoute extends RouteBuilder {
               Map<String, ?> headerSourceMetadata =
                   ex.getIn().getHeader(DebeziumConstants.HEADER_SOURCE_METADATA, Map.class);
 
+              Long ts_ms = (Long) headerSourceMetadata.get("ts_ms");
+
+              // this is not really necessary and probably adds too much overhead, but just for
+              // display purpose for now
+              String ts =
+                  DateTimeFormatter.ISO_INSTANT
+                      .withZone(ZoneId.of("UTC"))
+                      .format(Instant.ofEpochMilli(ts_ms));
+
               String db = (String) headerSourceMetadata.get("db");
               String schema = (String) headerSourceMetadata.get("schema");
               String table = (String) headerSourceMetadata.get("table");
@@ -47,7 +59,7 @@ public class DebeziumPgRoute extends RouteBuilder {
               Struct value = ex.getIn().getBody(Struct.class);
 
               DebeziumChangeEvent event =
-                  new DebeziumChangeEvent(db, schema, table, operation, key, value);
+                  new DebeziumChangeEvent(ts, db, schema, table, operation, key, value);
               ex.getIn().setBody(event);
             })
         .marshal()
@@ -70,6 +82,7 @@ class StructSerializer extends JsonSerializer<Struct> {
 @Data
 @AllArgsConstructor
 class DebeziumChangeEvent {
+  private String ts;
   private String database;
   private String schema;
   private String table;
