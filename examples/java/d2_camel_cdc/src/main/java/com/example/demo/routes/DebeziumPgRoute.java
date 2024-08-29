@@ -31,6 +31,7 @@ public class DebeziumPgRoute extends RouteBuilder {
             + "&schemaIncludeList=public"
             + "&tableIncludeList=public.organisationunit"
             + "&columnIncludeList=.*\\.uid"
+            // + "&columnExcludeList=.*\\.geometry"
             + "&pluginName=pgoutput"
             + "&slotName=slot1"
             + "&topicPrefix=prefix1"
