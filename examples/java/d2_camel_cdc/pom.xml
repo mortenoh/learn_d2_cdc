@@ -21,6 +21,7 @@
     <camel.version>4.7.0</camel.version>
     <dhis2.version>2.0.1</dhis2.version>
     <debezium.version>2.7.1.Final</debezium.version>
+    <kafka.version>3.8.0</kafka.version>
   </properties>
 
   <dependencies>
@@ -87,6 +88,11 @@
       <groupId>io.debezium</groupId>
       <artifactId>debezium-core</artifactId>
       <version>${debezium.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.kafka</groupId>
+      <artifactId>kafka-clients</artifactId>
+      <version>${kafka.version}</version>
     </dependency>
 
     <dependency>
