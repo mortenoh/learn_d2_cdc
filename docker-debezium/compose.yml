@@ -1,6 +1,6 @@
 services:
   pg:
-    build: .
+    build: ../docker
     restart: always
     container_name: pg
     environment:
@@ -11,8 +11,8 @@ services:
     ports:
       - "15432:5432"
     volumes:
-      - ./initdb.sh:/docker-entrypoint-initdb.d/initdb.sh
-      - ./dhis.tgz:/docker-entrypoint-initdb.d/dhis.tgz
+      - ../docker/initdb.sh:/docker-entrypoint-initdb.d/initdb.sh
+      - ../docker/dhis.tgz:/docker-entrypoint-initdb.d/dhis.tgz
     healthcheck:
       test: [ "CMD-SHELL", "pg_isready -d $${POSTGRES_DB} -U $${POSTGRES_USER}" ]
       interval: 1s
