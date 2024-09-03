@@ -17,7 +17,7 @@ import org.apache.camel.component.debezium.DebeziumConstants;
 import org.apache.kafka.connect.data.Struct;
 import org.springframework.stereotype.Component;
 
-@Component
+// @Component
 public class DebeziumPgRoute extends RouteBuilder {
 
   @Override
