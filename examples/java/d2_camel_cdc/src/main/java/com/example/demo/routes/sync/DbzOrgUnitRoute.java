@@ -1,4 +1,4 @@
-package com.example.demo.routes;
+package com.example.demo.routes.sync;
 
 import java.util.Map;
 import org.apache.avro.generic.GenericRecord;
@@ -6,8 +6,8 @@ import org.apache.camel.builder.RouteBuilder;
 import org.hisp.dhis.api.model.v2_39_1.Metadata;
 import org.springframework.stereotype.Component;
 
-@Component
-public class KafkaDbzEnrichRoute extends RouteBuilder {
+// @Component
+public class DbzOrgUnitRoute extends RouteBuilder {
 
   @Override
   public void configure() throws Exception {
