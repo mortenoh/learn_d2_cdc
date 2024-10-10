@@ -1,0 +1,16 @@
+{
+  "name": "postgres-connector",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "plugin.name": "pgoutput",
+    "database.hostname": "pg",
+    "database.port": "5432",
+    "database.user": "dhis",
+    "database.password": "dhis",
+    "database.dbname" : "dhis",
+    "database.server.name": "pg",
+    "slot.name": "dbz_slot",
+    "table.include.list": "public.attribute,public.organisationunit,public.orgunitgroup",
+    "topic.prefix" : "dbz"
+  }
+}
