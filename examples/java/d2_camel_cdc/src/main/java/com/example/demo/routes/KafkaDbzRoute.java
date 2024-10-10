@@ -4,7 +4,7 @@ import org.apache.avro.generic.GenericRecord;
 import org.apache.camel.builder.RouteBuilder;
 import org.springframework.stereotype.Component;
 
-@Component
+// @Component
 public class KafkaDbzRoute extends RouteBuilder {
 
   @Override

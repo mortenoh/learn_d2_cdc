@@ -18,4 +18,10 @@ public class Main {
     return Dhis2ClientBuilder.newClient("http://localhost:8080/api", "admin", "district")
         .build();
   }
+
+  @Bean
+  public Dhis2Client dhis2target() {
+    return Dhis2ClientBuilder.newClient("https://play.im.dhis2.org/dev/api", "admin", "district")
+        .build();
+  }
 }
