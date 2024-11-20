@@ -5,7 +5,7 @@ import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.kafka.KafkaConstants;
 import org.springframework.stereotype.Component;
 
-@Component
+// @Component
 public class DbzOrgUnitGroupsRoute extends RouteBuilder {
 
   @Override
